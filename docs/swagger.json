@@ -1,0 +1,853 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "OneDay API",
+    "description": "OneDay API Docs",
+    "contact": {
+      "name": "Buusha",
+      "email": "buusha.br@gmail.com"
+    }
+  },
+  "host": 5000,
+  "basePath": "/api-docs",
+  "tags": [
+    {
+      "name": "Queue CRUD",
+      "description": "Queue related apis"
+    },
+    {
+      "name": "Health",
+      "description": "Health Check"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {},
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/menu/list": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/menu/create": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/menu/edit/{menuId}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "menuId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/user/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/user/signIn": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/user/register": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/feedback/list": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/feedback/create": {
+      "post": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/feedback/delete/{deleteId}": {
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "deleteId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/feedback/starred/{feedbackId}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "feedbackId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "helathResponse": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 200
+        },
+        "message": {
+          "type": "string",
+          "example": "Success"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "User"
+        },
+        "required": {
+          "type": "array",
+          "example": [
+            "name",
+            "email",
+            "password"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "role": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "example": [
+                    "Owner",
+                    "Customer",
+                    "Staff",
+                    "Chef"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "domain": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "example": [
+                    "Kitchen",
+                    "Store",
+                    "Dining",
+                    "Marketing",
+                    "Delivering",
+                    "Service",
+                    "Juicer",
+                    "Billing",
+                    "Admin"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "email": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "phone": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "password": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "updatedAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "createdByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "updatedByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "_id": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Menu": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Menu"
+        },
+        "required": {
+          "type": "array",
+          "example": [
+            "item_name",
+            "category",
+            "cuisine"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "item_name": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "category": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "cuisine": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "item_description": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "food_type": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "number"
+                }
+              }
+            },
+            "food_taste": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "array"
+                },
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "object"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {}
+                    },
+                    "required": {
+                      "type": "array",
+                      "example": [],
+                      "items": {}
+                    }
+                  }
+                }
+              }
+            },
+            "food_fact": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "updatedAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "createdByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "updatedByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "_id": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Customer": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Customer"
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "phone": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "name": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "purchase_points": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "number"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "updatedAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "createdByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "updatedByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "_id": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "Feedback": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "User"
+        },
+        "required": {
+          "type": "array",
+          "example": [
+            "name",
+            "email",
+            "password"
+          ],
+          "items": {
+            "type": "string"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "role": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "example": [
+                    "Owner",
+                    "Customer",
+                    "Staff",
+                    "Chef"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "domain": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "enum": {
+                  "type": "array",
+                  "example": [
+                    "Kitchen",
+                    "Store",
+                    "Dining",
+                    "Marketing",
+                    "Delivering",
+                    "Service",
+                    "Juicer",
+                    "Billing",
+                    "Admin"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "email": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "phone": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "password": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "createdAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "updatedAt": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                },
+                "format": {
+                  "type": "string",
+                  "example": "date-time"
+                }
+              }
+            },
+            "createdByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "updatedByUserId": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            },
+            "_id": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "errorResponse.400": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 400
+        },
+        "message": {
+          "type": "string",
+          "example": "Invalid Request"
+        }
+      }
+    },
+    "errorResponse.401": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 401
+        },
+        "message": {
+          "type": "string",
+          "example": "UnAuthorized Access"
+        }
+      }
+    },
+    "errorResponse.403": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 403
+        },
+        "message": {
+          "type": "string",
+          "example": "Forbidden"
+        }
+      }
+    },
+    "errorResponse.404": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "example": "404"
+        },
+        "message": {
+          "type": "string",
+          "example": "Not found"
+        }
+      }
+    },
+    "errorResponse.500": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "number",
+          "example": 500
+        },
+        "message": {
+          "type": "string",
+          "example": "Internal Server Error"
+        }
+      }
+    }
+  }
+}
