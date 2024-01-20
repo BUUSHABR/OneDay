@@ -1,0 +1,408 @@
+{
+	"info": {
+		"_postman_id": "7c4ddfce-e9ae-4362-8893-cca7e3ecaab1",
+		"name": "One Day",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "31841877"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User-Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "   { \"name\": \"Buusha\",\r\n            \"role\": \"Owner\",\r\n            \"domain\": \"Admin\",\r\n            \"email\": \"buushas.br@gmail.com\",\r\n            \"phone\": \"+918939423416\",\r\n            \"password\":\"Ragul@123\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/user/register"
+					},
+					"response": []
+				},
+				{
+					"name": "User-Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"pm.test(\"Response status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Response has the required fields - token, name, email, and role\", function () {\r",
+									"    const responseData = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(responseData).to.be.an('object');\r",
+									"    pm.expect(responseData.token).to.exist;\r",
+									"    pm.expect(responseData.name).to.exist;\r",
+									"    pm.expect(responseData.email).to.exist;\r",
+									"    pm.expect(responseData.role).to.exist;\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Email is in a valid format\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData).to.be.an('object');\r",
+									"  pm.expect(responseData.email).to.match(/^.+@.+\\..+$/);\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Token is a non-empty string\", function () {\r",
+									"  const responseData = pm.response.json();\r",
+									"  \r",
+									"  pm.expect(responseData.data.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+									"});\r",
+									"\r",
+									"\r",
+									"pm.test(\"Content-Type header is application/json\", function () {\r",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"buushas.br@gmail.com\",\r\n    \"password\":\"Ragul@123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/user/signIn"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Menu",
+			"item": [
+				{
+					"name": "Menu-List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{local}}/menu/list"
+					},
+					"response": []
+				},
+				{
+					"name": "Create-Menu",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE2ODNlNTQ3MWVlYjdhMmVmOGU4NDEiLCJpYXQiOjE3MDU3MzM0NjcsImV4cCI6MTcwNTc1MTQ2N30.lSLibSXkUMYdGzVlClbrA3tPbzNhO_jwAJBofJd8Mrk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"item_name\": \"Delicious Dish\",\r\n    \"category\": \"Main Course\",\r\n    \"cuisine\": \"Italian\",\r\n    \"item_description\": \"A mouth-watering dish with rich flavors.\",\r\n    \"food_type\": 1,\r\n    \"food_taste\": [\"Spicy\", \"Savory\"],\r\n    \"food_fact\": \"This dish is a traditional Italian recipe.\"\r\n}\r\n// {\r\n//   \"_id\": {\r\n//     \"$oid\": \"65a66ba20df680e5c26bd9ab\"\r\n//   },\r\n//   \"item_name\": \"French Fries\",\r\n//   \"category\": \"Appetizer\",\r\n//   \"cuisine\": \"French\",\r\n//   \"item_description\": \"Delicious crispy fries served with ketchup.\",\r\n//   \"food_type\": 1,\r\n//   \"food_taste\": [\r\n//     \"Salty\",\r\n//     \"Crunchy\"\r\n//   ],\r\n//   \"food_fact\": \"The origins of French fries can be traced back to the late 17th century, where they were first introduced in the Spanish Netherlands. The term 'French fries' is believed to have originated during World War I when American soldiers tasted them in Belgium and thought they were in France.\",\r\n//   \"createdAt\": \"2024-01-16T12:00:00.000Z\",\r\n//   \"createdByUserId\": \"Buusha\",\r\n//   \"updatedByUserId\": \"\"\r\n// }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/menu/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Edit-Menu",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE2ODNlNTQ3MWVlYjdhMmVmOGU4NDEiLCJpYXQiOjE3MDU3MzM0NjcsImV4cCI6MTcwNTc1MTQ2N30.lSLibSXkUMYdGzVlClbrA3tPbzNhO_jwAJBofJd8Mrk",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"item_name\":\"Chicken Pakoda\",\"category\":\"Main Course\",\"cuisine\":\"Italian\",\"item_description\":\"A mouth-watering dish with rich flavors.\",\"food_type\":1,\"food_taste\":[\"Spicy\",\"Savory\"],\"food_fact\":\"This dish is a traditional Italian recipe.\",\"createdAt\":\"2024-01-20T07:49:35.993Z\",\"__v\":0}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/menu/edit/65ab7b0f63273d92f8b5b2bc"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feedback",
+			"item": [
+				{
+					"name": "FeedBack-List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/feedback/list"
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback-Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"feedback\": \"Excellent service!\",\r\n    \"dish_to_add\": \"French Fries\",\r\n    \"service_rating\": 5,\r\n    \"food_rating\": 4,\r\n    \"starred\": false,\r\n    \"phone\":\"9092042198\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/feedback/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Feedback-Starred",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWE2ODNlNTQ3MWVlYjdhMmVmOGU4NDEiLCJpYXQiOjE3MDU3NTUwMzYsImV4cCI6MTcwNTc3MzAzNn0.a2m42l6jPmv5fTZZdZIseDm-owALA00lekGh34j2r8Q",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"starred\":true}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/feedback/starred/65abb50b9c7f4340e1baf8a7"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Utilities",
+			"item": [
+				{
+					"name": "Category-Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": " {\r\n    \"category_name\": \"Main Dish\",\r\n    \"category_icon\": \"\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/category/create/"
+					},
+					"response": []
+				},
+				{
+					"name": "Category-Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{local}}/category/delete/"
+					},
+					"response": []
+				},
+				{
+					"name": "Category-List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{local}}/category/list/"
+					},
+					"response": []
+				},
+				{
+					"name": "Cuisine-List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{local}}/cuisine/list"
+					},
+					"response": []
+				},
+				{
+					"name": "Cuisine-Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"cuisine_name\": \"Italian\",\r\n  \"cuisine_icon\": \"italian_icon.png\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/cuisine/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Cuisine-Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{local}}/cuisine/delete/"
+					},
+					"response": []
+				},
+				{
+					"name": "Taste-Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"taste_name\": \"Spicy\",\r\n  \"taste_icon\": \"\"\r\n\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{local}}/taste/create"
+					},
+					"response": []
+				},
+				{
+					"name": "Taste-List",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{local}}/taste/list"
+					},
+					"response": []
+				},
+				{
+					"name": "Taste-Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{local}}/taste/delete"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
