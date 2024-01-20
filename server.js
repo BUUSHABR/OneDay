@@ -1,10 +1,12 @@
 require('dotenv').config();
 
+
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cors = require('cors')
 const path = require('path');
+const multer = require('multer');
 
 //Swagger Implementation
 const swaggerUi = require('swagger-ui-express');
@@ -31,7 +33,42 @@ mongoose.connect(config.dbUrl, {
     .catch(error => {
         console.error('Error connecting to MongoDB:', error);
     });
-app.use(routes)
+
+
+app.use(routes);
+
+
+
+
+
+
+
+const storage = multer.diskStorage({
+    destination: './uploads',
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    },
+  });
+  const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5000000 }, // 1 MB limit
+  }).single('image'); // 'image' should match the field name in the form
+app.use('/uploads', express.static('uploads'));
+app.post('/upload', (req, res) => {
+    upload(req, res, (err) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      // File uploaded successfully, you can access req.file for details
+      return res.json({ filename: req.file.filename, path: req.file.path });
+    });
+  });
+
+
+
+
+
+
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);

@@ -25,7 +25,7 @@ module.exports = {
             } else if (user.role!='Owner') {
                 return response.unAuthorized(res, "Your Are not an Owner, Only Owner has the Access to this Route!");
             }
-            req.user = user
+            req.user = decode;
             next();
         } catch (error) {
             console.log(error);

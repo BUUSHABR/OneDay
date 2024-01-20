@@ -22,7 +22,13 @@ const tasteServices = {
     },
     create:async(req,res)=>{
         try {
-            const createdMenu = new Taste(req.body);
+            let Request=req.body;
+
+            console.log("Request",Request)
+             Request.createdAt=new Date();
+             Request.createdByUserId=req.user.userId;
+        
+            const createdMenu = new Taste(Request);
             await createdMenu.save();
             
             res.status(201).json({
