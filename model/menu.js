@@ -16,6 +16,10 @@ const menuSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    active: {
+        type: Boolean,
+        default:true
+    },
     item_description: {
         type: String,
         default: ''
@@ -33,6 +37,9 @@ const menuSchema = new mongoose.Schema({
     },
     item_url: {
         type: String,
+    },
+    price:{
+        type:Number,
     },
     createdAt: {
         type: Date,

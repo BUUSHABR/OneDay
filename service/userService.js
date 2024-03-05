@@ -24,23 +24,23 @@ const userServices = {
 
     signIn: async (req, res) => {
         const { email, password } = req.body;
-
+        console.log("yyyy",req.body)
         try {
             const user = await User.findOne({ email });
-
+            console.log("userrr",user)
             if (!user) {
                 return res.status(401).json({ error: 'Invalid email or password' });
             }
 
             const isPasswordValid = await bcrypt.compare(password, user.password);
-
+            console.log("ispass",isPasswordValid)
             if (!isPasswordValid) {
                 return res.status(401).json({ error: 'Invalid email or password' });
             }
 
             // Generate JWT token
             const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRETKEY, { expiresIn: '5h' });
-
+            console.log("tkt",token)
             res.status(200).json({
                 message: 'Sign-in successful',
                 data:{
