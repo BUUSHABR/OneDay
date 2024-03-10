@@ -1,6 +1,6 @@
 module.exports={
     secretKey:'oneday',
-    dbUrl:"mongodb://localhost:27017/oneday",
+    dbUrl: process.env.MONGO_CONNECTION_STRING,
     swagger:{
         host:5001
     }

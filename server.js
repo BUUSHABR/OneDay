@@ -36,22 +36,22 @@ mongoose.connect(config.dbUrl, {
         console.error('Error connecting to MongoDB:', error);
     });
 
-    mongoose.connection.on('connected', () => {
-      console.log('Connected to MongoDB');
+  //   mongoose.connection.on('connected', () => {
+  //     console.log('Connected to MongoDB');
   
-      // Backup command
-      const backupFileName = `${backupDir}/backup-${new Date().toISOString()}.gz`;
-      const backupCommand = `mongodump --uri ${config.dbUrl} --archive=${backupFileName} --gzip`;
+  //     // Backup command
+  //     const backupFileName = `${backupDir}/backup-${new Date().toISOString()}.gz`;
+  //     const backupCommand = `mongodump --uri ${config.dbUrl} --archive=${backupFileName} --gzip`;
   
-      // Execute backup command
-      exec(backupCommand, (error, stdout, stderr) => {
-          if (error) {
-              console.error(`Backup failed: ${error.message}`);
-              return;
-          }
-          console.log(`Backup successful. Backup file: ${backupFileName}`);
-      });
-  });
+  //     // Execute backup command
+  //     exec(backupCommand, (error, stdout, stderr) => {
+  //         if (error) {
+  //             console.error(`Backup failed: ${error.message}`);
+  //             return;
+  //         }
+  //         console.log(`Backup successful. Backup file: ${backupFileName}`);
+  //     });
+  // });
   
 
 app.use(routes);
