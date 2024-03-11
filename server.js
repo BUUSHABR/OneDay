@@ -9,6 +9,7 @@ const path = require('path');
 const multer = require('multer');
 const { exec } = require('child_process');
 const backupDir = './config';
+const admin = require('firebase-admin');
 
 //Swagger Implementation
 const swaggerUi = require('swagger-ui-express');
@@ -56,32 +57,82 @@ mongoose.connect(config.dbUrl, {
 
 app.use(routes);
 
+// Initialize Firebase Admin SDK
+const serviceAccount = require('./serviceAccountKey.json'); // Adjust the path if needed
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: 'node-oneday.appspot.com' // Set your storage bucket URL
+});
+
+// Access Firebase services here, e.g., Firebase Storage
+const bucket = admin.storage().bucket();
 
 
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
+// Define route for image upload
+app.post('/upload', upload.single('image'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
 
+  // File info
+  const filename = Date.now() + '-' + path.basename(req.file.originalname);
+  const file = bucket.file(filename);
 
-
-const storage = multer.diskStorage({
-    destination: './uploads',
-    filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    },
+  // Create upload stream
+  const stream = file.createWriteStream({
+    metadata: {
+      contentType: req.file.mimetype
+    }
   });
-  const upload = multer({
-    storage: storage,
-    limits: { fileSize: 5000000 }, // 1 MB limit
-  }).single('image'); // 'image' should match the field name in the form
-app.use('/uploads', express.static('uploads'));
-app.post('/upload', (req, res) => {
-    upload(req, res, (err) => {
-      if (err) {
-        return res.status(500).json({ error: err.message });
-      }
-      // File uploaded successfully, you can access req.file for details
-      return res.json({ filename: req.file.filename, path: req.file.path });
+
+  // Handle upload errors
+  stream.on('error', (err) => {
+    console.error('Error uploading image:', err);
+    res.status(500).json({ error: 'Failed to upload image' });
+  });
+
+  // Handle upload completion
+  stream.on('finish', () => {
+    // Make the image publicly accessible
+    file.makePublic().then(() => {
+      const imageUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+      res.json({ imageUrl: imageUrl });
+    }).catch((err) => {
+      console.error('Error making image public:', err);
+      res.status(500).json({ error: 'Failed to upload image' });
     });
   });
+
+  // Pipe the file data to the storage stream
+  stream.end(req.file.buffer);
+});
+
+
+
+
+// const storage = multer.diskStorage({
+//     destination: './uploads',
+//     filename: function (req, file, cb) {
+//       cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+//     },
+//   });
+//   const upload = multer({
+//     storage: storage,
+//     limits: { fileSize: 5000000 }, // 1 MB limit
+//   }).single('image'); // 'image' should match the field name in the form
+// app.use('/uploads', express.static('uploads'));
+// app.post('/upload', (req, res) => {
+//     upload(req, res, (err) => {
+//       if (err) {
+//         return res.status(500).json({ error: err.message });
+//       }
+//       // File uploaded successfully, you can access req.file for details
+//       return res.json({ filename: req.file.filename, path: req.file.path });
+//     });
+//   });
 
 
 
