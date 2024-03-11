@@ -111,7 +111,9 @@ app.post('/upload', upload.single('image'), (req, res) => {
 });
 
 
-
+app.get('/', (req, res) => {
+  res.send('Welcome,to One Day Kitchen');
+});
 
 // const storage = multer.diskStorage({
 //     destination: './uploads',
